@@ -22,5 +22,13 @@ data_bcv$variacion <- as.numeric(data_bcv$variacion)
 
 data_bcv <- data_bcv[!is.na(data_bcv$liquidez_monetaria_semanal_bs), ]
 
-rev(seq(as.Date("2019-1-4"), length.out = length(data_bcv$variacion),
-        by = "week"))
+data_bcv$fecha <- rev(seq(as.Date("2019-1-4"),
+                          length.out = length(data_bcv$variacion),
+                          by = "week"))
+
+p <- ggplot(data_bcv, aes(x = data_bcv$fecha, y = data_bcv$variacion)) +
+    geom_line() +
+    geom_point() +
+    geom_hline(yintercept = 10)
+
+p
