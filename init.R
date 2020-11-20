@@ -3,7 +3,11 @@ library(gdata)
 library(rvest)
 options(scipen = 999)
 
-url1 <- "http://www.bcv.org.ve/sites/default/files/indicadores_sector_monetario/liquidez_monetaria_semanal.xls"
+sector <- "indicadores_sector_monetario/"
+indicador <- "liquidez_monetaria_semanal.xls"
+site <- "http://www.bcv.org.ve/sites/default/files/"
+
+url1 <- paste(site, sector, indicador, sep = "")
 
 data_bcv  <- read.xls(url1, sheet = "LIQUIDEZ_2019-2020", pattern = "al")
 
@@ -79,7 +83,7 @@ ggplot() +
                                  color = "Dolar BCV"), size = 1.5) +
     geom_hline(yintercept = 10, size = 1) +
     geom_hline(yintercept = 0, size = 1) +
-    ggtitle("Variación % Liquidez Monetaria vs Dolar BCV (hasta el 6/11/2020)") +
+    ggtitle("Variación % Liquidez Monetaria vs Dolar BCV (al 6/11/2020)") +
     labs(caption = "Fuente: BCV y calculos propios") +
     scale_color_manual(values = c("Liquidez Monetaria" = "#065FB4",
                                   "Dolar BCV" = "#57780B"),
