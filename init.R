@@ -1,6 +1,8 @@
 library(tidyverse)
 library(gdata)
 library(rvest)
+library(lubridate)
+library(scales)
 options(scipen = 999)
 
 sector <- "indicadores_sector_monetario/"
@@ -29,8 +31,18 @@ data_bcv$variacion <- as.numeric(data_bcv$variacion)
 data_bcv <- data_bcv[!is.na(data_bcv$liquidez_monetaria_semanal_bs), ]
 
 data_bcv$fecha <- rev(seq(as.Date("2019-1-4"),
-                          length.out = length(data_bcv$variacion),
-                          by = "week"))
+                  length.out = length(data_bcv$liquidez_monetaria_semanal_bs),
+                  by = "week"))
+
+ggplot(data = data_bcv, aes(x = fecha,
+      y = liquidez_monetaria_semanal_bs / 1000000, color = "darkred")) +
+      geom_bar(stat = "identity") +
+      ggtitle("Liq. Monetaria Semanal (Billones de Bs) 2019-1-4 - 2020-11-13") +
+      ylab("Billones de Bolivares") +
+      xlab("Fecha") +
+      theme(legend.position = "none")
+
+ggsave("figures/liquidez.png", width = 13, height = 7)
 
 scrappedurl <-
     read_html("http://www.bcv.org.ve/estadisticas/indice-de-inversion")
@@ -88,3 +100,5 @@ ggplot() +
     scale_color_manual(values = c("Liquidez Monetaria" = "#065FB4",
                                   "Dolar BCV" = "#57780B"),
                                   labs(color = "Variación %"))
+
+ggsave("figures/liquidez_vs_dolarbcv.png", width = 8, height = 10)
