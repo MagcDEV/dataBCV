@@ -42,7 +42,7 @@ ggplot(data = data_bcv, aes(x = fecha,
       xlab("Fecha") +
       theme(legend.position = "none")
 
-ggsave("figures/liquidez.png", width = 13, height = 7)
+ggsave("figures/liquidez.png")
 
 scrappedurl <-
     read_html("http://www.bcv.org.ve/estadisticas/indice-de-inversion")
@@ -81,6 +81,15 @@ tabla_idi$idi <- as.numeric(tabla_idi$idi)
 
 tabla_idi$fecha <- as.Date(tabla_idi$fecha, "%d-%m-%Y")
 
+ggplot(tabla_idi, aes(x = fecha, y = tipo_de_cambio)) +
+  geom_line(color = "#A33B20") +
+  geom_area(fill = "#A33B20") +
+  ggtitle("Tipo de Cambio Bs/Usd BCV") +
+  ylab("Bs/Usd") +
+  xlab("Fecha")
+
+ggsave("figures/tipo_de_cambio.png")
+
 data_bcv <- merge(data_bcv, tabla_idi, all.x = TRUE, by = "fecha")
 
 data_bcv <- data_bcv[!is.na(data_bcv$tipo_de_cambio), ]
@@ -95,7 +104,7 @@ ggplot() +
                                  color = "Dolar BCV"), size = 1.5) +
     geom_hline(yintercept = 10, size = 1) +
     geom_hline(yintercept = 0, size = 1) +
-    ggtitle("Variación % Liquidez Monetaria vs Dolar BCV (al 6/11/2020)") +
+    ggtitle("Variación % Liquidez Monetaria vs Dolar BCV (al 13/11/2020)") +
     labs(caption = "Fuente: BCV y calculos propios") +
     scale_color_manual(values = c("Liquidez Monetaria" = "#065FB4",
                                   "Dolar BCV" = "#57780B"),
